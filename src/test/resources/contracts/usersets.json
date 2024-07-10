@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome1",
+  "definitions": {
+    "Welcome1": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "elapsedMilliseconds": {
+          "type": "integer"
+        },
+        "userSets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserSet"
+          }
+        }
+      },
+      "required": [
+        "count",
+        "elapsedMilliseconds",
+        "userSets"
+      ],
+      "title": "Welcome1"
+    },
+    "UserSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "links": {
+          "$ref": "#/definitions/Links"
+        },
+        "id": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/definitions/Type"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "null"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "createdOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedOn": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "count",
+        "createdOn",
+        "description",
+        "id",
+        "links",
+        "name",
+        "slug",
+        "type",
+        "updatedOn",
+        "user"
+      ],
+      "title": "UserSet"
+    },
+    "Links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        },
+        "web": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        }
+      },
+      "required": [
+        "self",
+        "web"
+      ],
+      "title": "Links"
+    },
+    "User": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lang": {
+          "$ref": "#/definitions/Lang"
+        },
+        "avatarUrl": {
+          "type": "null"
+        },
+        "headerUrl": {
+          "type": "null"
+        },
+        "initials": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "avatarUrl",
+        "headerUrl",
+        "id",
+        "initials",
+        "lang",
+        "name"
+      ],
+      "title": "User"
+    },
+    "Type": {
+      "type": "string",
+      "enum": [
+        "Creations",
+        "Default"
+      ],
+      "title": "Type"
+    },
+    "Lang": {
+      "type": "string",
+      "enum": [
+        "nl",
+        "en"
+      ],
+      "title": "Lang"
+    }
+  }
+}
