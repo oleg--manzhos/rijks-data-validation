@@ -1,4 +1,6 @@
 package me.manzhos.api;
 
-public class CollectionsApi {
+import me.manzhos.base.BaseTest;
+
+public class CollectionsApi extends BaseTest {
 }

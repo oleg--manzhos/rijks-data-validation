@@ -1,12 +1,11 @@
 package me.manzhos.tests.usersets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
 import me.manzhos.base.BaseTest;
-import me.manzhos.endpoints.UsersetsEndpoints;
-import me.manzhos.models.UsersetResponse;
+import me.manzhos.dataproviders.PaginationDataProvider;
+import me.manzhos.models.AllUsersetsResponse;
+import me.manzhos.models.SpecificUsersetResponse;
 import me.manzhos.utils.BOMRemover;
 import me.manzhos.utils.PropertiesReader;
 import org.testng.Assert;
@@ -14,9 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class UsersetsFunctionalTest extends BaseTest{
@@ -25,7 +22,8 @@ public class UsersetsFunctionalTest extends BaseTest{
     private PropertiesReader propertiesReader;
     private UsersetsApi usersetsApi;
     private BOMRemover bomRemover;
-    private UsersetResponse usersetResponse;
+    private SpecificUsersetResponse specificUsersetResponse;
+    private AllUsersetsResponse allUsersetsResponse;
 
     @BeforeMethod (alwaysRun = true)
     public void getEnvironmentUrl() throws IOException {
@@ -33,26 +31,41 @@ public class UsersetsFunctionalTest extends BaseTest{
         baseUrl = propertiesReader.getValueFromConfig("usersetUrl");
         usersetsApi = new UsersetsApi();
         bomRemover = new BOMRemover();
-        usersetResponse = new UsersetResponse();
+        specificUsersetResponse = new SpecificUsersetResponse();
+        allUsersetsResponse = new AllUsersetsResponse();
     }
 
     @Test
-    public void checkAllUsersetsTest() throws IOException {
-        Response allUsersets = given()
-                .spec(mainSpecification("nl"))
-                .baseUri(baseUrl)
-                .when().log().all()
-                .get(UsersetsEndpoints.getAllUsersets);
-        allUsersets.then().log().all();
-        allUsersets.then().assertThat().statusCode(200);
+    public void checkAllUsersetsHappyPathTest() throws IOException {
+        String allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "nl").then().extract().asString();
+        AllUsersetsResponse cleanedResponseBody = bomRemover.removeBOM(allUsersetsResponse, allUsersets);
+
+        Assert.assertEquals(cleanedResponseBody.getUserSets().size(), 10);
+    }
+
+    @Test
+    public void checkAllUsersetsHappyPathEnTest() throws IOException {
+        String allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "en").then().extract().asString();
+        AllUsersetsResponse cleanedResponseBody = bomRemover.removeBOM(allUsersetsResponse, allUsersets);
+
+        Assert.assertEquals(cleanedResponseBody.getUserSets().size(), 10);
+    }
+
+    @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "pagination" )
+    public void checkAllUsersetsPagination(String page, String usersetsPerPage, int expectedAmount) throws IOException {
+        String allUsersets = usersetsApi.getAllUsersetsWithPaginationApi(baseUrl, "nl", page, usersetsPerPage)
+                .then().extract().asString();
+        AllUsersetsResponse cleanedResponseBody = bomRemover.removeBOM(allUsersetsResponse, allUsersets);
+
+        int sizePerPage = Integer.valueOf(cleanedResponseBody.getUserSets().size());
+        Assert.assertEquals(sizePerPage, expectedAmount);
     }
 
     @Test
     public void checkSpecificUsersetTest() throws IOException {
         String userset = "1664319-mijn-eerste-verzameling";
-        String stringWithBom = usersetsApi.getUsersetsApi(baseUrl, userset)
-                .then().extract().asString();
-        UsersetResponse cleanedResponseBody = bomRemover.removeBOM(usersetResponse, stringWithBom);
+        String stringWithBom = usersetsApi.getUsersetsApi(baseUrl, userset).then().extract().asString();
+        SpecificUsersetResponse cleanedResponseBody = bomRemover.removeBOM(specificUsersetResponse, stringWithBom);
 
         Assert.assertEquals(cleanedResponseBody.getUserSet().getId(), userset);
     }
@@ -62,14 +75,8 @@ public class UsersetsFunctionalTest extends BaseTest{
     @Test(enabled = false)
     public void checkSpecificUsersetTestFailed() throws IOException {
         String userset = "1664319-mijn-eerste-verzameling";
-        Response specificUserset = given()
-                .spec(mainSpecification("nl"))
-                .baseUri(baseUrl)
-                .pathParam("set-id", userset)
-                .when().log().all()
-                .get(UsersetsEndpoints.getUsersetDetails);
-
-        specificUserset.then().log().all();
-        specificUserset.then().statusCode(200).body("userSer.id", equalTo(userset));
+        Response specificUsersetResponse= usersetsApi.getUsersetsApi(baseUrl, userset);
+        specificUsersetResponse.then().log().all();
+        specificUsersetResponse.then().statusCode(200).body("userSer.id", equalTo(userset));
     }
 }

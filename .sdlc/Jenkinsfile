@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run all the the tests
+                sh 'mvn clean test'
+                //Run happy path test
+                sh ''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/build/reports/tests/test/*.html', allowEmptyArchive: true
+                }
+                failure {
+                    mail to: 'team@example.com',
+                         subject: "FAILED: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                         body: "Please check the Jenkins job ${env.JOB_NAME} #${env.BUILD_NUMBER}.\n\n${env.BUILD_URL}"
+                }
+            }
+        }
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh './deploy.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

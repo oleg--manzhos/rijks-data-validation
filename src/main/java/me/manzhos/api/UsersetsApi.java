@@ -11,6 +11,32 @@ import static io.restassured.RestAssured.given;
 
 public class UsersetsApi extends BaseTest {
 
+    @Step("Get all usersets")
+    public Response getAllUsersetsApi(String baseUrl, String culture) throws IOException {
+        Response allUsersets = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .get(UsersetsEndpoints.getAllUsersets);
+        allUsersets.then().log().all();
+
+        return allUsersets;
+    }
+
+    @Step("Get all usersets")
+    public Response getAllUsersetsWithPaginationApi(String baseUrl, String culture, String page, String pageSize) throws IOException {
+        Response allUsersets = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .queryParam("page", page)
+                .queryParam("pageSize", pageSize)
+                .when().log().all()
+                .get(UsersetsEndpoints.getAllUsersets);
+        allUsersets.then().log().all();
+
+        return allUsersets;
+    }
+
     @Step("Get the specific user set: {userset}")
     public Response getUsersetsApi(String baseUrl, String userset) throws IOException {
         Response specificUserset = given()
@@ -20,7 +46,7 @@ public class UsersetsApi extends BaseTest {
                 .when().log().all()
                 .get(UsersetsEndpoints.getUsersetDetails);
         specificUserset.then().log().all();
-        specificUserset.then().statusCode(200);
+
         return specificUserset;
     }
 }

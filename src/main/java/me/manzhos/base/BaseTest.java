@@ -17,4 +17,6 @@ public class BaseTest {
         return  given().contentType(ContentType.JSON).pathParam("culture", culture)
               .queryParam("key", apiKey);
     }
+
+
 }

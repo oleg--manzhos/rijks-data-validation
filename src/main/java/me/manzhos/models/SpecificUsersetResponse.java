@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UsersetResponse {
+public class SpecificUsersetResponse {
 
     @JsonProperty("elapsedMilliseconds")
     private int elapsedMilliseconds;
 
     @JsonProperty("userSet")
-    private UsersetsModel.UserSet userSet;
+    private SpecificUsersetModel.UserSet userSet;
 }
