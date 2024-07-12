@@ -13,7 +13,9 @@ public class BaseTest {
     private String apiKey;
 
     public RequestSpecification mainSpecification(String culture) throws IOException {
+
         apiKey = new PropertiesReader().getValueFromConfig("api_key");
+
         return  given().contentType(ContentType.JSON).pathParam("culture", culture)
               .queryParam("key", apiKey);
     }

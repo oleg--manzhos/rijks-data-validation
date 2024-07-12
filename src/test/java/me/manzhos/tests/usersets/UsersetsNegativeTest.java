@@ -3,6 +3,7 @@ package me.manzhos.tests.usersets;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
 import me.manzhos.base.BaseTest;
+import me.manzhos.base.RetryConfig;
 import me.manzhos.dataproviders.PaginationDataProvider;
 import me.manzhos.models.AllUsersetsResponse;
 import me.manzhos.models.SpecificUsersetResponse;
@@ -23,7 +24,7 @@ public class UsersetsNegativeTest extends BaseTest {
     private SpecificUsersetResponse specificUsersetResponse;
     private AllUsersetsResponse allUsersetsResponse;
 
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void getEnvironmentUrl() throws IOException {
         propertiesReader = new PropertiesReader();
         baseUrl = propertiesReader.getValueFromConfig("usersetUrl");
@@ -33,7 +34,7 @@ public class UsersetsNegativeTest extends BaseTest {
         allUsersetsResponse = new AllUsersetsResponse();
     }
 
-    @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "negative-pagination" )
+    @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "negative-pagination", retryAnalyzer = RetryConfig.class)
     public void checkUsersetsResultsNegative(String page, String usersetsPerPage, int expectedAmount) throws IOException {
         String allUsersets = usersetsApi.getAllUsersetsWithPaginationApi(baseUrl, "nl", page, usersetsPerPage)
                 .then().extract().asString();
@@ -42,21 +43,21 @@ public class UsersetsNegativeTest extends BaseTest {
         Assert.assertEquals(cleanedResponseBody.getUserSets().size(), expectedAmount);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkUsersetsResultsNonExistingCulture() throws IOException {
         Response allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "dk");
         allUsersets.then().log().all();
         allUsersets.then().statusCode(404);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkUsersetsResultsInvalidCulture() throws IOException {
         Response allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "++");
         allUsersets.then().log().all();
         allUsersets.then().statusCode(404);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkUnexistingSpecificUsersetTest() throws IOException {
         String userset = "3664319-mijn-eerste-verzameling";
         Response usersetResponse = usersetsApi.getUsersetsApi(baseUrl, userset);

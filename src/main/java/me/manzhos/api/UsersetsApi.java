@@ -23,7 +23,7 @@ public class UsersetsApi extends BaseTest {
         return allUsersets;
     }
 
-    @Step("Get all usersets")
+    @Step("Get all usersets with {page} pages and {pageSize} size per page")
     public Response getAllUsersetsWithPaginationApi(String baseUrl, String culture, String page, String pageSize) throws IOException {
         Response allUsersets = given()
                 .spec(mainSpecification(culture))

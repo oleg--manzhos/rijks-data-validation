@@ -1,0 +1,226 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome3",
+  "definitions": {
+    "Welcome3": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "elapsedMilliseconds": {
+          "type": "integer"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "countFacets": {
+          "$ref": "#/definitions/CountFacets"
+        },
+        "artObjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ArtObject"
+          }
+        },
+        "facets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Welcome3Facet"
+          }
+        }
+      },
+      "required": [
+        "artObjects",
+        "count",
+        "countFacets",
+        "elapsedMilliseconds",
+        "facets"
+      ],
+      "title": "Welcome3"
+    },
+    "ArtObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "links": {
+          "$ref": "#/definitions/Links"
+        },
+        "id": {
+          "type": "string"
+        },
+        "objectNumber": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "hasImage": {
+          "type": "boolean"
+        },
+        "principalOrFirstMaker": {
+          "type": "string"
+        },
+        "longTitle": {
+          "type": "string"
+        },
+        "showImage": {
+          "type": "boolean"
+        },
+        "permitDownload": {
+          "type": "boolean"
+        },
+        "webImage": {
+          "$ref": "#/definitions/Image"
+        },
+        "headerImage": {
+          "$ref": "#/definitions/Image"
+        },
+        "productionPlaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "hasImage",
+        "headerImage",
+        "id",
+        "links",
+        "longTitle",
+        "objectNumber",
+        "permitDownload",
+        "principalOrFirstMaker",
+        "productionPlaces",
+        "showImage",
+        "title",
+        "webImage"
+      ],
+      "title": "ArtObject"
+    },
+    "Image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "guid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "offsetPercentageX": {
+          "type": "integer"
+        },
+        "offsetPercentageY": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ]
+        }
+      },
+      "required": [
+        "guid",
+        "height",
+        "offsetPercentageX",
+        "offsetPercentageY",
+        "url",
+        "width"
+      ],
+      "title": "Image"
+    },
+    "Links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "self": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "http"
+          ]
+        },
+        "web": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "http"
+          ]
+        }
+      },
+      "required": [
+        "self",
+        "web"
+      ],
+      "title": "Links"
+    },
+    "CountFacets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hasimage": {
+          "type": "integer"
+        },
+        "ondisplay": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "hasimage",
+        "ondisplay"
+      ],
+      "title": "CountFacets"
+    },
+    "Welcome3Facet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "facets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacetFacet"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "otherTerms": {
+          "type": "integer"
+        },
+        "prettyName": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "facets",
+        "name",
+        "otherTerms",
+        "prettyName"
+      ],
+      "title": "Welcome3Facet"
+    },
+    "FacetFacet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ],
+      "title": "FacetFacet"
+    }
+  }
+}

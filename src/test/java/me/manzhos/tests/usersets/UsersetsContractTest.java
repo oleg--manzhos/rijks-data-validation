@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
+import me.manzhos.base.RetryConfig;
 import me.manzhos.endpoints.UsersetsEndpoints;
 import me.manzhos.models.AllUsersetsResponse;
 import me.manzhos.utils.BOMRemover;
@@ -25,7 +26,7 @@ public class UsersetsContractTest {
     private BOMRemover bomRemover;
     private AllUsersetsResponse allUsersetsResponse;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void getEnvironmentUrl() throws IOException {
         propertiesReader = new PropertiesReader();
         baseUrl = propertiesReader.getValueFromConfig("usersetUrl");
@@ -35,7 +36,7 @@ public class UsersetsContractTest {
         allUsersetsResponse = new AllUsersetsResponse();
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkUsersetsContractTest() throws IOException {
         String json = usersetsApi.getAllUsersetsApi(baseUrl, apiKey).asString();
         AllUsersetsResponse allUsersResponse = bomRemover.removeBOM(allUsersetsResponse, json);

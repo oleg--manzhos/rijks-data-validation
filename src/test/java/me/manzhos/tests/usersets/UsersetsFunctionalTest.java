@@ -3,6 +3,7 @@ package me.manzhos.tests.usersets;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
 import me.manzhos.base.BaseTest;
+import me.manzhos.base.RetryConfig;
 import me.manzhos.dataproviders.PaginationDataProvider;
 import me.manzhos.models.AllUsersetsResponse;
 import me.manzhos.models.SpecificUsersetResponse;
@@ -35,7 +36,7 @@ public class UsersetsFunctionalTest extends BaseTest{
         allUsersetsResponse = new AllUsersetsResponse();
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkAllUsersetsHappyPathTest() throws IOException {
         String allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "nl").then().extract().asString();
         AllUsersetsResponse cleanedResponseBody = bomRemover.removeBOM(allUsersetsResponse, allUsersets);
@@ -43,7 +44,7 @@ public class UsersetsFunctionalTest extends BaseTest{
         Assert.assertEquals(cleanedResponseBody.getUserSets().size(), 10);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkAllUsersetsHappyPathEnTest() throws IOException {
         String allUsersets = usersetsApi.getAllUsersetsApi(baseUrl, "en").then().extract().asString();
         AllUsersetsResponse cleanedResponseBody = bomRemover.removeBOM(allUsersetsResponse, allUsersets);
@@ -51,7 +52,7 @@ public class UsersetsFunctionalTest extends BaseTest{
         Assert.assertEquals(cleanedResponseBody.getUserSets().size(), 10);
     }
 
-    @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "pagination" )
+    @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "pagination", retryAnalyzer = RetryConfig.class)
     public void checkAllUsersetsPagination(String page, String usersetsPerPage, int expectedAmount) throws IOException {
         String allUsersets = usersetsApi.getAllUsersetsWithPaginationApi(baseUrl, "nl", page, usersetsPerPage)
                 .then().extract().asString();
@@ -61,7 +62,7 @@ public class UsersetsFunctionalTest extends BaseTest{
         Assert.assertEquals(sizePerPage, expectedAmount);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkSpecificUsersetTest() throws IOException {
         String userset = "1664319-mijn-eerste-verzameling";
         String stringWithBom = usersetsApi.getUsersetsApi(baseUrl, userset).then().extract().asString();
