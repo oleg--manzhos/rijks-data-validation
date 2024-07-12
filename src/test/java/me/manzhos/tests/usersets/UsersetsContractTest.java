@@ -37,6 +37,6 @@ public class UsersetsContractTest {
                 .get(UsersetsEndpoints.getAllUsersets);
 
         jsonSchema.then().assertThat().
-            body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/resources/contracts/usersets.json").getCanonicalFile()));
+            body(JsonSchemaValidator.matchesJsonSchemaInClasspath("contracts/usersets.json"));
     }
 }

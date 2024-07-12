@@ -17,7 +17,10 @@ A brief description of the project and its purpose.
 
 ## Installation
 ### Prerequisites
-- List of prerequisites
+- Java 17
+- Maven 3.X
+### Commands
+```mvn clean install```
 
 ### Steps
 1. Step 1
