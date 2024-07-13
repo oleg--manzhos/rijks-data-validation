@@ -1,6 +1,5 @@
 package me.manzhos.tests.usersets;
 
-import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
@@ -12,7 +11,6 @@ import me.manzhos.utils.PropertiesReader;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
