@@ -21,6 +21,11 @@ public class CollectionsApi extends BaseTest {
     private final String pageSize = "ps";
     private final String objectNumber = "object-number";
     private final String search = "q";
+    private final String involvedMaker = "involvedMaker";
+    private final String objectType = "type";
+    private final String material = "material";
+    private final String technique = "technique";
+    private final String datingPeriod = "f.dating.period";
 
     @Step("Get the list of all collections")
     public Response getAllCollections(String baseUrl, String culture) throws IOException {
@@ -103,5 +108,72 @@ public class CollectionsApi extends BaseTest {
                         obj.get("productionPlaces") != null ? obj.get("productionPlaces").toString() : null
                 ).anyMatch(field -> field != null && field.contains(searchQuery))
         );
+    }
+
+    @Step("Get collection by {involvedMaker} involved maker")
+    public Response  getAllCollectionsByInvolvedMaker(String baseUrl, String culture, String involvedMaker) throws IOException {
+        Response allCollectionInvolvedMakerResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.involvedMaker, involvedMaker)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionInvolvedMakerResponse.then().log().all();
+
+        return allCollectionInvolvedMakerResponse;
+    }
+
+    @Step("Get collection by {type} type")
+    public Response getAllCollectionsByType(String baseUrl, String culture, String type) throws IOException {
+        Response allCollectionInvolvedMakerResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.objectType, type)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionInvolvedMakerResponse.then().log().all();
+
+        return allCollectionInvolvedMakerResponse;
+    }
+
+    @Step("Get collection by {type} type")
+    public Response getAllCollectionsByMaterial(String baseUrl, String culture, String material) throws IOException {
+        Response allCollectionByMaterialResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.material, material)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionByMaterialResponse.then().log().all();
+
+        return allCollectionByMaterialResponse;
+    }
+
+    @Step("Get collection by {technique} technique")
+    public Response getAllCollectionsByTechnique (String baseUrl, String culture, String technique) throws IOException {
+        Response allCollectionByTechniqueResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.technique, technique)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionByTechniqueResponse.then().log().all();
+
+        return allCollectionByTechniqueResponse;
+
+    }
+
+    @Step("Get collection by {datingPeriod} dating period")
+    public Response getAllCollectionsByDatingPeriod (String baseUrl, String culture, String datingPeriod) throws IOException {
+        Response allCollectionByTechniqueResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.datingPeriod, datingPeriod)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionByTechniqueResponse.then().log().all();
+
+        return allCollectionByTechniqueResponse;
+
     }
 }

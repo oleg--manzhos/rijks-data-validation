@@ -1,8 +1,8 @@
-Rijks open data validation project
+# Rijks open data validation project
 
 ## Description
-A brief description of the project and its purpose.
-
+Rijksmuseum data services provide access to object metadata, bibliographic data and user generated content.
+These pages comprise the technical documentation of RijksData, also available are a general introduction, as well as the open data policy of the museum. Contact us if you have any questions or want to report issues.
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
@@ -14,6 +14,7 @@ A brief description of the project and its purpose.
 - [Support](#support)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
+- [Findings](#findings)
 
 ## Installation
 ### Prerequisites
@@ -22,12 +23,13 @@ A brief description of the project and its purpose.
 ### Commands
 ```mvn clean install```
 
-### Steps
-1. Step 1
-2. Step 2
-3. Step 3
-
 ## Usage
 ### How to Run Tests
+All tests for the whole project can be run by:
 ```bash
 # Example command to run tests
+mvn clean test
+```
+### Findings
+- Userset response contains BOM char, that prevents JSON from being parsed
+- Special chars in the pagination parameters are not treated incorrectly
