@@ -1,5 +1,6 @@
 package me.manzhos.tests.usersets;
 
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
 import me.manzhos.base.BaseTest;
@@ -17,6 +18,7 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
 
+@Feature("User-generated content")
 public class UsersetsFunctionalTest extends BaseTest{
 
     private String baseUrl;
@@ -71,7 +73,7 @@ public class UsersetsFunctionalTest extends BaseTest{
         Assert.assertEquals(cleanedResponseBody.getUserSet().getId(), userset);
     }
 
-    // this test is disabled as the response contains ZWNBSP (zero width no-break space ) character
+    // this test is disabled as the response contains ZWNBSP (zero width no-break space) character
     // that prevents it from being parsed
     @Test(enabled = false)
     public void checkSpecificUsersetTestFailed() throws IOException {

@@ -1,5 +1,6 @@
 package me.manzhos.tests.collections;
 
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import me.manzhos.api.CollectionsApi;
 import me.manzhos.base.RetryConfig;
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
 
+@Feature("Collections tests")
 public class SpecificCollectionFunctionalTest {
 
     private String baseUrl;
@@ -23,7 +25,6 @@ public class SpecificCollectionFunctionalTest {
         baseUrl = propertiesReader.getValueFromConfig("collectionUrl");
         collectionsApi = new CollectionsApi();
     }
-
 
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkSpecificCollectionEn() throws IOException {

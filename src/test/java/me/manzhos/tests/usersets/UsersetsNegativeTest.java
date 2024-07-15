@@ -1,5 +1,6 @@
 package me.manzhos.tests.usersets;
 
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
 import me.manzhos.base.BaseTest;
@@ -15,23 +16,22 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+@Feature("Negative tests")
 public class UsersetsNegativeTest extends BaseTest {
 
     private String baseUrl;
     private PropertiesReader propertiesReader;
     private UsersetsApi usersetsApi;
     private BOMRemover bomRemover;
-    private SpecificUsersetResponse specificUsersetResponse;
     private AllUsersetsResponse allUsersetsResponse;
 
     @BeforeMethod (alwaysRun = true)
     public void getEnvironmentUrl() throws IOException {
-        propertiesReader = new PropertiesReader();
-        baseUrl = propertiesReader.getValueFromConfig("usersetUrl");
-        usersetsApi = new UsersetsApi();
-        bomRemover = new BOMRemover();
-        specificUsersetResponse = new SpecificUsersetResponse();
-        allUsersetsResponse = new AllUsersetsResponse();
+        this.propertiesReader = new PropertiesReader();
+        this.baseUrl = propertiesReader.getValueFromConfig("usersetUrl");
+        this.usersetsApi = new UsersetsApi();
+        this.bomRemover = new BOMRemover();
+        this.allUsersetsResponse = new AllUsersetsResponse();
     }
 
     @Test(dataProviderClass = PaginationDataProvider.class, dataProvider = "negative-pagination", retryAnalyzer = RetryConfig.class)

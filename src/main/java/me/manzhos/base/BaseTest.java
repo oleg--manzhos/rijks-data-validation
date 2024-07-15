@@ -1,5 +1,6 @@
 package me.manzhos.base;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import me.manzhos.utils.PropertiesReader;
@@ -14,7 +15,14 @@ public class BaseTest {
     private String apiKey;
     private PropertiesReader propertiesReader;
 
+    static AllureRestAssured allureFilter;
+
     public RequestSpecification mainSpecification(String culture) throws IOException {
+
+        allureFilter = new AllureRestAssured()
+                .setRequestAttachmentName("Request")
+                .setResponseAttachmentName("Response");
+
         this.propertiesReader = new PropertiesReader();
         try {
             this.apiKey = System.getProperty(apiKey);
@@ -22,7 +30,11 @@ public class BaseTest {
         catch (NullPointerException ex){
             apiKey = propertiesReader.getValueFromConfig("api_key");
         }
-        System.out.println("API key is: -----> " + apiKey);
-        return  given().contentType(ContentType.JSON).pathParam("culture", culture).queryParam("key", apiKey);
+
+        return  given()
+                .filter(allureFilter)
+                .contentType(ContentType.JSON)
+                .pathParam("culture", culture)
+                .queryParam("key", apiKey);
     }
 }

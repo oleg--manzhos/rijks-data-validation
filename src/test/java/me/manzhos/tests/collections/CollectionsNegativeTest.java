@@ -1,20 +1,19 @@
 package me.manzhos.tests.collections;
 
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import me.manzhos.api.CollectionsApi;
 import me.manzhos.base.BaseTest;
 import me.manzhos.base.RetryConfig;
 import me.manzhos.utils.PropertiesReader;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
+@Feature("Negative tests")
 public class CollectionsNegativeTest extends BaseTest {
 
     private String baseUrl;
@@ -34,7 +33,7 @@ public class CollectionsNegativeTest extends BaseTest {
         Response specificCollectionResponse = collectionsApi
                 .getSpecificCollection(baseUrl, "en", collectionObject);
         //assertions
-       assertArtObjectIsNull(specificCollectionResponse);
+        specificCollectionResponse.then().statusCode(200).body("artObject", nullValue());
     }
 
     @Test(retryAnalyzer = RetryConfig.class)
@@ -62,7 +61,7 @@ public class CollectionsNegativeTest extends BaseTest {
         assertArtObjectIsNull(allCollectionsByMaterialResponse);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByNormalizedColors() throws IOException {
         String normalizedColors = "#XV79DB";
         Response allCollectionsByNormalizedColorsResponse = collectionsApi.getAllCollectionsByNormalizedColors(baseUrl, "en", normalizedColors);

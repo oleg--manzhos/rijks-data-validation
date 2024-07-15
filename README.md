@@ -9,11 +9,7 @@ These pages comprise the technical documentation of RijksData, also available ar
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [CI/CD Integration](#cicd-integration)
-- [Contributing](#contributing)
 - [Documentation](#documentation)
-- [Support](#support)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
 - [Findings](#findings)
 
 ## Installation
@@ -27,7 +23,7 @@ These pages comprise the technical documentation of RijksData, also available ar
 ### How to Run Tests
 All tests for the whole project can be run by:
 ```bash
-# Example command to run tests
+# Сommand to run all the tests
 mvn clean test
 ```
 ### Findings

@@ -1,5 +1,8 @@
 package me.manzhos.tests.collections;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import me.manzhos.api.CollectionsApi;
 import me.manzhos.base.BaseTest;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Feature("Check filtering capabilities for all collections: filtering by involved maker, by collection type, by material," +
+        "by technique, by dating period, by normalized color, by available images, by top pieces and sorting")
 public class CollectionsFilterByFunctionalTests extends BaseTest {
 
     private String baseUrl;
@@ -28,30 +33,37 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         baseUrl = propertiesReader.getValueFromConfig("collectionUrl");
         collectionsApi = new CollectionsApi();
     }
-
+    @Description("Filtering all collections by the artist involved")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsByInvolvedMaker() throws IOException {
         String involvedMaker = "Isaac Weissenbruch";
+        Allure.step("Set involved maker to "+ involvedMaker);
         Response allCollectionsResponse = collectionsApi.getAllCollectionsByInvolvedMaker(baseUrl, "en", involvedMaker);
         allCollectionsResponse.then().statusCode(200);
-
+        Allure.step("Check that response status is 200");
         List<String> involvedMakersList = new ArrayList<>();
         involvedMakersList.addAll(allCollectionsResponse.then().extract().path("facets.findAll{it}.facets[0].key"));
 
         Assert.assertTrue(involvedMakersList.contains(involvedMaker));
+        Allure.step("Assert that list of involved makers includes " + involvedMaker);
     }
 
+    @Description("Filtering all collections by type")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByType() throws IOException {
         String type = "folder (container)";
+        Allure.step("Set collection filter to "+ type);
         Response allCollectionsResponse = collectionsApi.getAllCollectionsByType(baseUrl, "en", type);
 
         List<String> typeList = new ArrayList<>();
         typeList.addAll(allCollectionsResponse.then().extract().path("facets.findAll{it}.facets[1].key"));
+        Allure.step("Get the list of used types for the returned collections");
 
         Assert.assertTrue(typeList.contains(type));
+        Allure.step("Assert that list of types includes " + type);
     }
 
+    @Description("Filtering all collections by material")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByMaterial() throws IOException {
         String material = "Japanese paper (handmade paper)";
@@ -63,9 +75,11 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertTrue(materialList.contains(material));
     }
 
+    @Description("Filtering all collections by technique")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByTechnique() throws IOException {
         String technique = "jacquard";
+
         Response allCollectionsByTechniqueResponse = collectionsApi.getAllCollectionsByTechnique(baseUrl, "en", technique);
 
         List<String> techniqueList = new ArrayList<>();
@@ -74,17 +88,18 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertTrue(techniqueList.contains(technique));
     }
 
+    @Description("Filtering all collections by dating period")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByDatingPeriod() throws IOException {
         String datingPeriod = "18";
-        Response allCollectionsByTechniqueResponse = collectionsApi.getAllCollectionsByDatingPeriod(baseUrl, "en", datingPeriod);
+        Response allCollectionsByDatingPeriodResponse = collectionsApi.getAllCollectionsByDatingPeriod(baseUrl, "en", datingPeriod);
 
         List<String> datingPeriodList = new ArrayList<>();
-        datingPeriodList.addAll(allCollectionsByTechniqueResponse.then().extract().path("facets.findAll{it}.facets[2].key"));
+        datingPeriodList.addAll(allCollectionsByDatingPeriodResponse.then().extract().path("facets.findAll{it}.facets[2].key"));
 
         Assert.assertTrue(datingPeriodList.contains(datingPeriod));
     }
-
+    @Description("Filtering all collections by normalized colors")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByNormalizedColors() throws IOException {
         String normalizedColors = "#4279DB";
@@ -95,7 +110,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
 
         Assert.assertTrue(materialList.contains(normalizedColors));
     }
-
+    @Description("Filtering all collections by displayed image = true")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByImageOnlyTrue() throws IOException {
         Response allCollectionsByImageOnlyResponse = collectionsApi.getAllCollectionsByImageOnly(baseUrl, "nl", true);
@@ -107,7 +122,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
 //
 //        Assert.assertTrue(imageOnlyList.contains(Boolean.valueOf("true"));
    }
-
+    @Description("Filtering all collections by displayed image = false")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByImageOnlyFalse() throws IOException {
         Response allCollectionsByImageOnlyResponse = collectionsApi.getAllCollectionsByImageOnly(baseUrl, "nl", false);
@@ -119,7 +134,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
 //
 //        Assert.assertTrue(imageOnlyList.contains(Boolean.valueOf("true")));
     }
-
+    @Description("Filtering all collections by top piece = false")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByTopPiecesFalse() throws IOException {
         Response allCollectionsByImageOnlyResponse = collectionsApi.getAllCollectionsByTopPieces(baseUrl, "nl", false);
@@ -132,6 +147,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
 //        Assert.assertTrue(topPiecesList.contains(Boolean.valueOf("false")));
     }
 
+    @Description("Filtering all collections by top piece = true")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionByTopPiecesTrue() throws IOException {
         Response allCollectionsByImageOnlyResponse = collectionsApi.getAllCollectionsByTopPieces(baseUrl, "nl", true);
@@ -143,7 +159,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
 //
 //        Assert.assertTrue(topPiecesList.contains(Boolean.valueOf("true")));
     }
-
+    @Description("Filtering all collections by search filter = relevance")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByRelevance() throws IOException {
         List<String> expectedRelevanceList = new ArrayList<>(Arrays.asList("BK-1973-482-B", "RP-F-2007-15-169",
@@ -157,6 +173,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertEquals(actualRelevanceList, expectedRelevanceList);
     }
 
+    @Description("Filtering all collections by search filter = object type")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByObjectType() throws IOException {
         List<String> expectedObjectTypeList = new ArrayList<>(Arrays.asList("SK-A-5003", "SK-A-5002",
@@ -170,6 +187,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertEquals(actualObjectTypeList, expectedObjectTypeList);
     }
 
+    @Description("Filtering all collections by search filter = chronologic")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByChronologic() throws IOException {
         List<String> expectedChronologicList = new ArrayList<>(Arrays.asList("AK-MAK-36", "AK-MAK-34",
@@ -183,6 +201,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertEquals(actualChronologicList, expectedChronologicList);
     }
 
+    @Description("Filtering all collections by search filter = achronologic")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByAchronologic() throws IOException {
         List<String> expectedChronologicList = new ArrayList<>(Arrays.asList("KOG-MP-1-3813A", "BK-16990",
@@ -196,6 +215,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertEquals(actualChronologicList, expectedChronologicList);
     }
 
+    @Description("Filtering all collections by search filter = artist desc")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByArtist() throws IOException {
         Response allCollectionsByArtistResponse = collectionsApi
@@ -206,6 +226,7 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         Assert.assertTrue(CollectionsApiUtil.isListSortedAlphabetically(expectedArtistOrderList, false));
     }
 
+    @Description("Filtering all collections by search filter = artist")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByArtistAsc() throws IOException {
         Response allCollectionsByArtistResponse = collectionsApi
@@ -214,5 +235,15 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
         expectedArtistOrderList.addAll(allCollectionsByArtistResponse.then().statusCode(200).extract()
                 .path("artObjects.findAll{it}.principalOrFirstMaker"));
         Assert.assertTrue(CollectionsApiUtil.isListSortedAlphabetically(expectedArtistOrderList, true));
+    }
+
+    @Description("Filtering all the collections, using combined parameters")
+    @Test(retryAnalyzer = RetryConfig.class)
+    public void checkCollectionsFilterByCombinedParameters() throws IOException {
+        Response allCollectionsByCombinedParametersResponse = collectionsApi
+                .getAllCollectionByCombinedParameters(baseUrl, "nl", SortByEnum.RELEVANCE.toString(),
+                        "0", "100", "Georg Rueter", "aluminium",
+                        "demonstratiemodel", "gelatineglasnegatief", false,
+                        "#4019B1","19", "false");
     }
 }

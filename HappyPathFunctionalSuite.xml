@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Functional tests" verbose="10">
+    <test name="FT" parallel="methods" thread-count="1">
+        <packages>
+            <package name="me.manzhos.tests.collections.CollectionsFunctionalTest"/>
+            <package name="me.manzhos.tests.collections.CollectionsFilterByFunctionalTests"/>
+            <package name="me.manzhos.tests.collections.SpecificCollectionFunctionalTest"/>
+            <package name="me.manzhos.tests.usersets.UsersetsFunctionalTest"/>
+            <package name="me.manzhos.tests.bibliographical.BibloigraphicalTest"/>
+        </packages>
+    </test>
+</suite>

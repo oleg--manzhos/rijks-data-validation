@@ -1,5 +1,7 @@
 package me.manzhos.tests.usersets;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import me.manzhos.api.UsersetsApi;
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 
+@Feature("Contract tests")
 public class UsersetsContractTest {
 
     private String baseUrl;
@@ -34,7 +37,8 @@ public class UsersetsContractTest {
         allUsersetsResponse = new AllUsersetsResponse();
     }
 
-    @Test(retryAnalyzer = RetryConfig.class)
+    @Description("Contract test to check the Usersets endpoint")
+    @Test
     public void checkUsersetsContractTest() throws IOException {
         String json = usersetsApi.getAllUsersetsApi(baseUrl, apiKey).asString();
         AllUsersetsResponse allUsersResponse = bomRemover.removeBOM(allUsersetsResponse, json);
