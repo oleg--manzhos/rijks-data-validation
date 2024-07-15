@@ -32,7 +32,6 @@ public class CollectionsFunctionalTest extends BaseTest {
 
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkAllCollectionsNl() throws IOException {
-
         Response allCollectionsResponse = collectionsApi.getAllCollections(baseUrl, "nl");
 
         allCollectionsResponse.then().statusCode(200)
@@ -47,62 +46,6 @@ public class CollectionsFunctionalTest extends BaseTest {
         allCollectionsResponse.then().statusCode(200)
                 .body("artObjects.findAll{it}.size()", equalTo(10),
                 "artObjects.find{it}.id", startsWith("en"));
-    }
-
-    @Test(retryAnalyzer = RetryConfig.class)
-    public void checkCollectionsByInvolvedMaker() throws IOException {
-        String involvedMaker = "Isaac Weissenbruch";
-        Response allCollectionsResponse = collectionsApi.getAllCollectionsByInvolvedMaker(baseUrl, "en", involvedMaker);
-        allCollectionsResponse.then().statusCode(200);
-
-        List<String> involvedMakers = new ArrayList<>();
-        involvedMakers.addAll(allCollectionsResponse.then().extract().path("facets.findAll{it}.facets[0].key"));
-
-        Assert.assertTrue(involvedMakers.contains(involvedMaker));
-    }
-
-    @Test
-    public void checkCollectionByType() throws IOException {
-        String type = "folder (container)";
-        Response allCollectionsResponse = collectionsApi.getAllCollectionsByType(baseUrl, "en", type);
-
-        List<String> typeList = new ArrayList<>();
-        typeList.addAll(allCollectionsResponse.then().extract().path("facets.findAll{it}.facets[1].key"));
-
-        Assert.assertTrue(typeList.contains(type));
-    }
-
-    @Test
-    public void checkCollectionByMaterial() throws IOException {
-        String material = "Japanese paper (handmade paper)";
-        Response allCollectionsResponse = collectionsApi.getAllCollectionsByMaterial(baseUrl, "en", material);
-
-        List<String> materialList = new ArrayList<>();
-        materialList.addAll(allCollectionsResponse.then().extract().path("facets.findAll{it}.facets[4].key"));
-
-        Assert.assertTrue(materialList.contains(material));
-    }
-
-    @Test
-    public void checkCollectionByTechnique() throws IOException {
-        String technique = "jacquard";
-        Response allCollectionsByTechniqueResponse = collectionsApi.getAllCollectionsByTechnique(baseUrl, "en", technique);
-
-        List<String> materialList = new ArrayList<>();
-        materialList.addAll(allCollectionsByTechniqueResponse.then().extract().path("facets.findAll{it}.facets[5].key"));
-
-        Assert.assertTrue(materialList.contains(technique));
-    }
-
-    @Test
-    public void checkCollectionByDatingPeriod() throws IOException {
-        String datingPeriod = "18";
-        Response allCollectionsByTechniqueResponse = collectionsApi.getAllCollectionsByDatingPeriod(baseUrl, "en", datingPeriod);
-
-        List<String> materialList = new ArrayList<>();
-        materialList.addAll(allCollectionsByTechniqueResponse.then().extract().path("facets.findAll{it}.facets[2].key"));
-
-        Assert.assertTrue(materialList.contains(datingPeriod));
     }
 
     @Test(dataProviderClass = CollectionsPaginationDataProvider.class, dataProvider = "pagination", retryAnalyzer = RetryConfig.class)

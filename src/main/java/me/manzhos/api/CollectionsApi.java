@@ -26,6 +26,11 @@ public class CollectionsApi extends BaseTest {
     private final String material = "material";
     private final String technique = "technique";
     private final String datingPeriod = "f.dating.period";
+    private final String normalizedColors = "f.normalized32Colors.hex";
+    private final String imageOnly = "imgonly";
+    private final String topPieces = "toppieces";
+    private final String sortBy = "s";
+
 
     @Step("Get the list of all collections")
     public Response getAllCollections(String baseUrl, String culture) throws IOException {
@@ -163,17 +168,81 @@ public class CollectionsApi extends BaseTest {
 
     }
 
+    @Step("Get collection by {normalizedColors} normalized colors")
+    public Response getAllCollectionsByNormalizedColors (String baseUrl, String culture, String normalizedColors) throws IOException {
+        Response allCollectionByNormalizedColorsResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.normalizedColors, normalizedColors)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionByNormalizedColorsResponse.then().log().all();
+
+        return allCollectionByNormalizedColorsResponse;
+    }
+
     @Step("Get collection by {datingPeriod} dating period")
     public Response getAllCollectionsByDatingPeriod (String baseUrl, String culture, String datingPeriod) throws IOException {
-        Response allCollectionByTechniqueResponse = given()
+        Response tileOfSpecificCollectionsResponse = given()
                 .spec(mainSpecification(culture))
                 .baseUri(baseUrl)
                 .when().log().all()
                 .queryParam(this.datingPeriod, datingPeriod)
+                .get(CollectionsEndpoint.getTiles);
+        tileOfSpecificCollectionsResponse.then().log().all();
+
+        return tileOfSpecificCollectionsResponse;
+    }
+
+    @Step("Get collection when imageOnly parameter is {imageOnly}")
+    public Response getAllCollectionsByImageOnly (String baseUrl, String culture, boolean imageOnly) throws IOException {
+        Response tileOfSpecificCollectionsResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.imageOnly, imageOnly)
                 .get(CollectionsEndpoint.getAllCollections);
-        allCollectionByTechniqueResponse.then().log().all();
+        tileOfSpecificCollectionsResponse.then().log().all();
 
-        return allCollectionByTechniqueResponse;
+        return tileOfSpecificCollectionsResponse;
+    }
 
+    @Step("Get collection when imageOnly parameter is {imageOnly}")
+    public Response getAllCollectionsByTopPieces (String baseUrl, String culture, boolean topPieces) throws IOException {
+        Response allCollectionsByTopPiecesResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.topPieces, topPieces)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionsByTopPiecesResponse.then().log().all();
+
+        return allCollectionsByTopPiecesResponse;
+    }
+
+    @Step("Get collection when relevance parameter s is {relevance}")
+    public Response getAllCollectionsByTopPieces (String baseUrl, String culture, String relevance) throws IOException {
+        Response allCollectionsByTopPiecesResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.topPieces, topPieces)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionsByTopPiecesResponse.then().log().all();
+
+        return allCollectionsByTopPiecesResponse;
+    }
+
+    public Response getAllCollectionsBySortingParameter(String baseUrl, String culture, String sortBy, String pageSize) throws IOException {
+        Response allCollectionsByRelevanceResponse = given()
+                .spec(mainSpecification(culture))
+                .baseUri(baseUrl)
+                .when().log().all()
+                .queryParam(this.sortBy, sortBy)
+                .queryParam(this.pageSize, pageSize)
+                .get(CollectionsEndpoint.getAllCollections);
+        allCollectionsByRelevanceResponse.then().log().all();
+
+        return allCollectionsByRelevanceResponse;
     }
 }

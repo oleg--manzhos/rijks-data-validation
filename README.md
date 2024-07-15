@@ -33,3 +33,4 @@ mvn clean test
 ### Findings
 - Userset response contains BOM char, that prevents JSON from being parsed
 - Special chars in the pagination parameters are not treated incorrectly
+- Filter by artist (both ascending and descending) doesn't work correctly

@@ -5,10 +5,13 @@ import me.manzhos.api.CollectionsApi;
 import me.manzhos.base.BaseTest;
 import me.manzhos.base.RetryConfig;
 import me.manzhos.utils.PropertiesReader;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
@@ -57,6 +60,14 @@ public class CollectionsNegativeTest extends BaseTest {
                 .getAllCollectionsByMaterial(baseUrl, "en", collectionMaterial);
 
         assertArtObjectIsNull(allCollectionsByMaterialResponse);
+    }
+
+    @Test
+    public void checkCollectionByNormalizedColors() throws IOException {
+        String normalizedColors = "#XV79DB";
+        Response allCollectionsByNormalizedColorsResponse = collectionsApi.getAllCollectionsByNormalizedColors(baseUrl, "en", normalizedColors);
+
+        assertArtObjectIsNull(allCollectionsByNormalizedColorsResponse);
     }
 
     @Test(retryAnalyzer = RetryConfig.class)
