@@ -5,10 +5,7 @@ import io.restassured.response.Response;
 import me.manzhos.api.CollectionsApi;
 import me.manzhos.base.BaseTest;
 import me.manzhos.base.RetryConfig;
-import me.manzhos.endpoints.UsersetsEndpoints;
-import me.manzhos.models.AllUsersetsResponse;
 import me.manzhos.utils.PropertiesReader;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
