@@ -4,6 +4,8 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import me.manzhos.base.BaseTest;
 import me.manzhos.endpoints.UsersetsEndpoints;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -21,6 +23,7 @@ public class UsersetsApi extends BaseTest {
      * @return The response from the API.
      * @throws IOException if an I/O error occurs.
      */
+
     @Step("Get all usersets")
     public Response getAllUsersetsApi(String baseUrl, String culture) throws IOException {
         Response allUsersets = given()
@@ -29,7 +32,6 @@ public class UsersetsApi extends BaseTest {
                 .when().log().all()
                 .get(UsersetsEndpoints.getAllUsersets);
         allUsersets.then().log().all();
-
         return allUsersets;
     }
 

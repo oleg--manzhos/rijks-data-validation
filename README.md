@@ -36,11 +36,16 @@ There are 3 test suits, designed to execute the groups of tests:
 mvn test -Dsurefire.suiteXmlFiles={test_suite_name}.xml
 ```
 
-### Testing
-
 ### CI/CD Integration
 Configurable command line parameter `api_key` is sent as `-Dapi_key` parameter. The test suites are also available to be called from the CI/CD.
 Jenkins file (template) allows to execute tests on the CI/CD pipeline
+
+### Test Reporting
+Allure test report was selected as a tool to visualize the result, obtained during the verification run
+Allure uses the following annotations:
+- `@Step` logs the called method with its parameter
+- `@Description` - test description
+- 
 
 ### Documentation
 Javadocs and this README file are the source of the documentation

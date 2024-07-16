@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.*;
+
 @Feature("Check filtering capabilities for all collections: filtering by involved maker, by collection type, by material," +
         "by technique, by dating period, by normalized color, by available images, by top pieces and sorting")
 public class CollectionsFilterByFunctionalTests extends BaseTest {
@@ -240,10 +242,23 @@ public class CollectionsFilterByFunctionalTests extends BaseTest {
     @Description("Filtering all the collections, using combined parameters")
     @Test(retryAnalyzer = RetryConfig.class)
     public void checkCollectionsFilterByCombinedParameters() throws IOException {
+        String pageSize = "100";
+        String material = "aluminium";
+        String datingPeriod = "19";
         Response allCollectionsByCombinedParametersResponse = collectionsApi
                 .getAllCollectionByCombinedParameters(baseUrl, "nl", SortByEnum.RELEVANCE.toString(),
-                        "0", "100", "Georg Rueter", "aluminium",
-                        "demonstratiemodel", "gelatineglasnegatief", false,
-                        "#4019B1","19", "false");
+                        "0", pageSize, "", material,
+                        "", "", false,
+                        "", datingPeriod, "false");
+
+        allCollectionsByCombinedParametersResponse.then().statusCode(200);
+
+        List<String> materialList = new ArrayList<>();
+        materialList.addAll(allCollectionsByCombinedParametersResponse.then().extract().path("facets.findAll{it}.facets[4].key"));
+        Assert.assertTrue(materialList.contains(material));
+
+        List<String> datingPeriodList = new ArrayList<>();
+        datingPeriodList.addAll(allCollectionsByCombinedParametersResponse.then().extract().path("facets.findAll{it}.facets[2].key"));
+        Assert.assertTrue(datingPeriodList.contains(datingPeriod));
     }
 }

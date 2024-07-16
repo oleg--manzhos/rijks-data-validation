@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import me.manzhos.base.BaseTest;
 import me.manzhos.endpoints.CollectionsEndpoint;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -378,21 +379,32 @@ public class CollectionsApi extends BaseTest {
 
     @Step("Filter all collections by all available parameters")
     public Response getAllCollectionByCombinedParameters(String baseUrl, String culture, String sortBy, String page, String pageSize,
-                                          String involvedMaker, String material,String type, String technique,
+                                          String involvedMaker, String material, String type, String technique,
                                           boolean topPieces, String normalizedColor, String datingPeriod, String imageOnly) throws IOException {
 
         Map<String,Object> qParameters = new HashMap<>();
-        qParameters.put(this.sortBy, sortBy);
-        qParameters.put(this.pageSize, pageSize);
-        qParameters.put(this.page, page);
-        qParameters.put(this.involvedMaker, involvedMaker);
-        qParameters.put(this.datingPeriod, datingPeriod);
-        qParameters.put(this.material, material);
-        qParameters.put(this.objectType, type);
-        qParameters.put(this.technique, technique);
-        qParameters.put(this.normalizedColors, normalizedColor);
-        qParameters.put(this.imageOnly, imageOnly);
-        qParameters.put(this.topPieces, topPieces);
+        if (!pageSize.isEmpty())
+            qParameters.put(this.sortBy, sortBy);
+        if (!pageSize.isEmpty())
+            qParameters.put(this.pageSize, pageSize);
+        if (!topPieces)
+            qParameters.put(this.topPieces, topPieces);
+        if (!imageOnly.isEmpty())
+            qParameters.put(this.imageOnly, imageOnly);
+        if (!type.isEmpty())
+            qParameters.put(this.objectType, type);
+        if (!technique.isEmpty())
+            qParameters.put(this.technique, technique);
+        if (!normalizedColor.isEmpty())
+            qParameters.put(this.normalizedColors, normalizedColor);
+        if (!datingPeriod.isEmpty())
+            qParameters.put(this.datingPeriod, datingPeriod);
+        if(!page.isEmpty())
+            qParameters.put(this.page, page);
+        if(!involvedMaker.isEmpty())
+            qParameters.put(this.involvedMaker, involvedMaker);
+        if(!material.isEmpty())
+            qParameters.put(this.material, material);
 
         Response allCollectionsByCombinedQueryResponse = given()
                 .spec(mainSpecification(culture))
