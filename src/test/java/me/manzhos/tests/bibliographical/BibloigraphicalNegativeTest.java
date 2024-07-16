@@ -1,7 +1,7 @@
 package me.manzhos.tests.bibliographical;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import me.manzhos.api.BibloigraphicalApi;
 import me.manzhos.base.BaseTest;
@@ -11,8 +11,9 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-@Feature("Bibliographic data")
-public class BibloigraphicalTest extends BaseTest {
+import static org.hamcrest.Matchers.*;
+
+public class BibloigraphicalNegativeTest extends BaseTest {
 
     private BibloigraphicalApi bibliographicalApi;
 
@@ -22,12 +23,13 @@ public class BibloigraphicalTest extends BaseTest {
     }
 
     @Description("Check biblographical endpoint returns data")
-    @Test(testName = "BibliographicalTest", retryAnalyzer = RetryConfig.class)
-    public void bibliographicalTest() throws IOException {
-        String query = "Boucher";
+    @Test(retryAnalyzer = RetryConfig.class, enabled = false)
+    public void checkBibliographicalInvalidQuerySynTest() throws IOException {
+        String query = "===";
+        String error = "Query syntax error";
         Response biblographicResponse =  bibliographicalApi
                 .getBiblographicData("1.1", "searchRetrieve", "2", query);
-        biblographicResponse.then().statusCode(200);//.contentType(ContentType.XML)
-               // .body(hasXPath("//datafield[@tag='260']/subfield[@code='b'][contains(text(), '"+ query+"')]"));
+        biblographicResponse.then().statusCode(200).contentType(ContentType.XML)
+                .body(hasXPath("//diagnostics//diag:message", equalTo(error)));
     }
 }

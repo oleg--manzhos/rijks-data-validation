@@ -6,7 +6,6 @@ These pages comprise the technical documentation of RijksData, also available ar
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [Configuration](#configuration)
 - [Testing](#testing)
 - [CI/CD Integration](#cicd-integration)
 - [Documentation](#documentation)
@@ -45,7 +44,7 @@ Allure test report was selected as a tool to visualize the result, obtained duri
 Allure uses the following annotations:
 - `@Step` logs the called method with its parameter
 - `@Description` - test description
-- 
+- `Allure.step()` - logs a step inside the test method
 
 ### Documentation
 Javadocs and this README file are the source of the documentation
