@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Contract-tests" verbose="5">
+    <test name="CT">
+        <classes>
+            <class name="me.manzhos.tests.collections.CollectionsContractTest" />
+            <class name="me.manzhos.tests.usersets.UsersetsContractTest" />
+        </classes>
+    </test>
+</suite>

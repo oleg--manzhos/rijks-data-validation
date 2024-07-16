@@ -28,7 +28,7 @@ public class BaseTest {
             this.apiKey = System.getProperty(apiKey);
         }
         catch (NullPointerException ex){
-            apiKey = propertiesReader.getValueFromConfig("api_key");
+            this.apiKey = propertiesReader.getValueFromConfig("api_key");
         }
 
         return  given()
